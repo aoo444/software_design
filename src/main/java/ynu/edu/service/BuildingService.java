@@ -1,10 +1,7 @@
 package ynu.edu.service;
 
-
+import com.baomidou.mybatisplus.extension.service.IService;
 import ynu.edu.po.Building;
 
-/**
- * 建筑Service
- */
-public interface BuildingService extends BaseService<Building> {
+public interface BuildingService extends IService<Building> {
 }

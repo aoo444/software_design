@@ -1,10 +1,8 @@
 package ynu.edu.service;
 
-
+import com.baomidou.mybatisplus.extension.service.IService;
 import ynu.edu.po.Meter;
 
-/**
- * 电表设备Service
- */
-public interface MeterService extends BaseService<Meter> {
+
+public interface MeterService extends IService<Meter> {
 }

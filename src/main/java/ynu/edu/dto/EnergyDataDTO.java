@@ -3,9 +3,7 @@ package ynu.edu.dto;
 import lombok.Data;
 import java.time.LocalDateTime;
 
-/**
- * 能耗数据响应DTO
- */
+// 能耗数据响应DTO
 @Data
 public class EnergyDataDTO {
     private Long id;                    // 主键ID
