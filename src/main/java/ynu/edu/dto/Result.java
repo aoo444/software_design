@@ -2,9 +2,7 @@ package ynu.edu.dto;
 
 import lombok.Data;
 
-/**
- * 全局统一响应结果
- */
+// 全局统一响应结果
 @Data
 public class Result<T> {
     private Integer code;    // 响应码：200=成功，500=失败
