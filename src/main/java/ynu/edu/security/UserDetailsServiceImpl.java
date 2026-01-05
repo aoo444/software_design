@@ -12,9 +12,7 @@ import ynu.edu.service.UserService;
 
 import java.util.Collections;
 
-/**
- * 用户详情服务实现（适配Spring Boot 3）
- */
+// 用户详情服务实现
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -36,7 +34,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("账号已禁用");
         }
 
-        // 构建UserDetails（适配Spring Boot 3）
+        // 构建UserDetails
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())
                 .password(user.getPassword())

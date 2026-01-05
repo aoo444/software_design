@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ynu.edu.sf_design.mapper.EnergyDataMapper">
+    <!-- 查询设备最近10条数据 -->
+    <select id="selectLatest10ByMeterId" resultType="ynu.edu.sf_design.entity.EnergyData">
+        SELECT * FROM energy_data
+        WHERE meter_id = #{meterId}
+        ORDER BY collect_time DESC
+            LIMIT 10
+    </select>
+
+    <!-- 查询设备最后一条累计用电量 -->
+    <select id="selectLastTotalEnergy" resultType="java.lang.Double">
+        SELECT total_energy FROM energy_data
+        WHERE meter_id = #{meterId}
+        ORDER BY collect_time DESC
+            LIMIT 1
+    </select>
+</mapper>
