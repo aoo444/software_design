@@ -1,0 +1,47 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/energy_20231120006?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: Zwx3411.!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  task:
+    scheduling:
+      pool:
+        size: 5
+
+# MyBatis-Plus??
+mybatis-plus:
+  mapper-locations: classpath:mybatis/*.xml
+  type-aliases-package: com.energy.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: AUTO
+      logic-delete-field: isDeleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# JWT??
+jwt:
+  secret: energy-monitor-2025-secret-key-123456
+  expiration: 3600000  # Token???1??
+  header: Authorization
+
+# ??????????????5??
+scheduled:
+  data-collect-interval: 5000
+
+# ?????
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+# ????
+logging:
+  level:
+    com.energy: debug
+    org.springframework.security: info
