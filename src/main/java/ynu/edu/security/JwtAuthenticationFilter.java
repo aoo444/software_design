@@ -31,10 +31,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        try {
-            // 1. 获取Token
-            String token = getTokenFromRequest(request);
-            if (StringUtils.hasText(token)) {
+        // 1. 获取Token
+        String token = getTokenFromRequest(request);
+        if (StringUtils.hasText(token)) {
+            try {
                 // 2. 解析用户名
                 String username = jwtUtil.getUsernameFromToken(token);
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -50,9 +50,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
                 }
+            } catch (Exception e) {
+                log.error("JWT认证失败：", e);
+                // 保留SecurityContext为空，让Spring Security的认证失败处理器处理
             }
-        } catch (Exception e) {
-            log.error("JWT认证失败：", e);
         }
 
         // 继续过滤链

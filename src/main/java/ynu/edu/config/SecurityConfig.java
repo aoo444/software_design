@@ -18,6 +18,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import lombok.RequiredArgsConstructor;
+import ynu.edu.security.JwtAccessDeniedHandler;
 import ynu.edu.security.JwtAuthenticationEntryPoint;
 import ynu.edu.security.JwtAuthenticationFilter;
 import ynu.edu.security.UserDetailsServiceImpl;
@@ -33,6 +34,8 @@ public class SecurityConfig {
     private  UserDetailsServiceImpl userDetailsService;
    @Autowired
    private  JwtAuthenticationEntryPoint unauthorizedHandler;
+   @Autowired
+   private  JwtAccessDeniedHandler accessDeniedHandler;
    @Autowired
    @Lazy
    private  JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -58,22 +61,25 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 
-    // 安全过滤链（Bean名正确，无冲突）
     @Bean
+    // 安全过滤链
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 // 跨域配置
                 .cors().configurationSource(corsConfigurationSource()).and()
                 // 关闭CSRF
                 .csrf().disable()
-                // 认证失败处理器
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                // 认证和授权失败处理器
+                .exceptionHandling()
+                    .authenticationEntryPoint(unauthorizedHandler)
+                    .accessDeniedHandler(accessDeniedHandler)
+                .and()
                 // 无状态会话
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 // 接口权限
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/user/login").permitAll()
-                        .requestMatchers("/doc.html/**", "/swagger-ui/**", "/webjars/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/doc.html", "/swagger-ui/**", "/webjars/**", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated()
                 );
 

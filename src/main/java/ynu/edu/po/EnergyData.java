@@ -6,9 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import java.time.LocalDateTime;
 
-/**
- * 能耗数据实体类
- */
+
 @Data
 @TableName("energy_data")
 public class EnergyData {

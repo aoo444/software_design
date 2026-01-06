@@ -1,15 +1,11 @@
 package ynu.edu.po;
 
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import java.time.LocalDateTime;
 
-/**
- * 建筑实体类
- */
+
 @Data
 @TableName("building")
 public class Building {
@@ -20,4 +16,8 @@ public class Building {
     private Integer floorCount;         // 楼层数
     private String useType;             // 建筑用途
     private LocalDateTime createTime;   // 创建时间
+
+    @TableLogic(value = "0", delval = "1") // 0=未删除，1=已删除
+    @TableField("is_deleted")
+    private Integer isDeleted;
 }

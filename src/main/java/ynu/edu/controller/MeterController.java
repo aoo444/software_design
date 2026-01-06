@@ -11,9 +11,6 @@ import ynu.edu.service.MeterService;
 
 import java.util.List;
 
-/**
- * 电表设备接口
- */
 @Tag(name = "电表设备接口")
 @RestController
 @RequestMapping("/meter")
@@ -32,6 +29,15 @@ public class MeterController {
     @PostMapping("/add")
     @PreAuthorize("hasRole('ADMIN')")
     public Result<?> add(@RequestBody Meter meter) {
-        return meterService.save(meter) ? Result.success() : Result.error("新增失败");
+        boolean success = meterService.addMeter(meter);
+        return success ? Result.success() : Result.error("新增失败");
+    }
+
+    @Operation(summary = "删除设备（仅管理员）")
+    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Result<?> delete(@PathVariable Long id) {
+        boolean success = meterService.removeById(id); // 自动执行UPDATE meter SET deleted=1 WHERE id=?
+        return success ? Result.success("删除成功（可恢复）") : Result.error("设备不存在");
     }
 }

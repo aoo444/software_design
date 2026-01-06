@@ -6,9 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import java.time.LocalDateTime;
 
-/**
- * 告警实体类
- */
+
 @Data
 @TableName("alarm")
 public class Alarm {

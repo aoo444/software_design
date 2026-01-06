@@ -31,4 +31,13 @@ public class Result<T> {
         result.setData(null);
         return result;
     }
+    
+    // 自定义错误码的失败响应
+    public static <T> Result<T> error(int code, String msg) {
+        Result<T> result = new Result<>();
+        result.setCode(code);
+        result.setMsg(msg);
+        result.setData(null);
+        return result;
+    }
 }

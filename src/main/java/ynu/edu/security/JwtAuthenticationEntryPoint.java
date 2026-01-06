@@ -26,7 +26,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
         // 构建失败响应
-        Result<?> result = Result.error("认证失败：" + authException.getMessage());
+        Result<?> result = Result.error(HttpServletResponse.SC_UNAUTHORIZED, "认证失败：" + authException.getMessage());
 
         // 写入响应
         PrintWriter writer = response.getWriter();

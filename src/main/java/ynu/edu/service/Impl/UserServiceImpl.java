@@ -1,5 +1,6 @@
 package ynu.edu.service.Impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public User getByUsername(String username) {
-        return baseMapper.selectByUsername(username);
+        return baseMapper.selectOne(
+                Wrappers.<User>lambdaQuery()
+                        .eq(User::getUsername, username)
+        );
     }
 }
