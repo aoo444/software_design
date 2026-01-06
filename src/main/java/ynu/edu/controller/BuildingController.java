@@ -30,9 +30,9 @@ public class BuildingController {
     @Operation(summary = "新增建筑（仅管理员）")
     @PostMapping("/add")
     @PreAuthorize("hasRole('ADMIN')")
-    public Result<?> add(@RequestBody Long id) {
-        boolean success = buildingService.removeById(id); // 自动执行软删除（UPDATE is_deleted=1）
-        return success ? Result.success("删除成功（可恢复）") : Result.error("建筑不存在");
+    public Result<?> add(@RequestBody Building building) {
+        boolean success = buildingService.save(building);
+        return success ? Result.success("新增建筑成功") : Result.error("新增建筑失败");
     }
 
     @Operation(summary = "删除建筑（仅管理员）")

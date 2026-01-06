@@ -9,10 +9,13 @@ import ynu.edu.service.MeterService;
 
 @Service
 public class MeterServiceImpl extends ServiceImpl<MeterMapper,Meter> implements MeterService {
-    // 在保存前给软删除字段赋值
     @Override
     public boolean addMeter(Meter meter) {
         meter.setIs_deleted(0);
+        // 输出调试信息
+        System.out.println("新建设备信息：" + meter);
+        System.out.println("isValid：" + meter.getIsValid());
+        System.out.println("status：" + meter.getStatus());
         return super.save(meter);
     }
 }
