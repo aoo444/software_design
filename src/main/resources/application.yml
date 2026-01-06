@@ -10,10 +10,11 @@ spring:
       pool:
         size: 5
 
-# MyBatis-Plus??
+
+# MyBatis-Plus
 mybatis-plus:
   mapper-locations: classpath:mybatis/*.xml
-  type-aliases-package: com.energy.entity
+  type-aliases-package: ynu.edu.po
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
@@ -24,24 +25,21 @@ mybatis-plus:
       logic-delete-value: 1
       logic-not-delete-value: 0
 
-# JWT??
+# JWT
 jwt:
   secret: energy-monitor-2025-secret-key-123456
-  expiration: 3600000  # Token???1??
+  expiration: 3600000
   header: Authorization
 
-# ??????????????5??
 scheduled:
   data-collect-interval: 5000
 
-# ?????
 server:
   port: 8080
   servlet:
     context-path: /api
 
-# ????
 logging:
   level:
-    com.energy: debug
+    ynu.edu: debug
     org.springframework.security: info

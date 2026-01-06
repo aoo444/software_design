@@ -3,6 +3,7 @@ package ynu.edu.service.Impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ynu.edu.design.factory.EnergyDataFactoryManager;
@@ -17,12 +18,15 @@ import java.util.List;
 // 数据模拟Service（定时任务）
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class SimulatorServiceImpl {
-    private final MeterMapper meterMapper;
-    private final EnergyDataMapper energyDataMapper;
-    private final EnergyDataFactoryManager dataFactory;
-    private final AlarmService alarmService;
+    @Autowired
+    private  MeterMapper meterMapper;
+    @Autowired
+    private  EnergyDataMapper energyDataMapper;
+    @Autowired
+    private  EnergyDataFactoryManager dataFactory;
+    @Autowired
+    private  AlarmService alarmService;
 
     // 定时采集能耗数据（每5秒）
     @Scheduled(fixedRateString = "${scheduled.data-collect-interval}")

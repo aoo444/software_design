@@ -3,6 +3,7 @@ package ynu.edu.service.Impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import ynu.edu.event.AlarmEvent;
@@ -18,9 +19,9 @@ import java.util.List;
 // 告警Service实现（观察者模式）
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class AlarmServiceImpl extends ServiceImpl<AlarmMapper, Alarm> implements AlarmService {
-    private final ApplicationEventPublisher eventPublisher;
+    @Autowired
+    private  ApplicationEventPublisher eventPublisher;
 
     @Override
     public void checkAndTriggerAlarm(EnergyData energyData, Meter meter) {

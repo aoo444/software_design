@@ -10,6 +10,5 @@ import ynu.edu.service.BuildingService;
 
 
 @Service
-@RequiredArgsConstructor
 public class BuildingServiceImpl extends ServiceImpl<BuildingMapper,Building> implements BuildingService {
 }

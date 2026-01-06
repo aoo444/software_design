@@ -26,7 +26,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-            <version>4.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -110,7 +109,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>ynu.edu.sf_design.SfDesignApplication</mainClass>
+                    <mainClass>ynu.edu.MainApplication</mainClass>
                     <skip>true</skip>
                 </configuration>
                 <executions>

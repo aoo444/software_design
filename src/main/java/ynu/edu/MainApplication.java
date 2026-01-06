@@ -3,11 +3,10 @@ package ynu.edu;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration;
 
-@SpringBootApplication
 @MapperScan("ynu.edu.mapper")
-@EnableScheduling
+@SpringBootApplication(exclude = SecurityFilterAutoConfiguration.class)
 public class MainApplication {
     public static void main(String[] args) {
         SpringApplication.run(MainApplication.class,args);

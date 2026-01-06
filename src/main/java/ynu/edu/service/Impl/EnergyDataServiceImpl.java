@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ynu.edu.dto.EnergyDataDTO;
 import ynu.edu.mapper.EnergyDataMapper;
@@ -16,9 +17,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class EnergyDataServiceImpl extends ServiceImpl<EnergyDataMapper,EnergyData> implements EnergyDataService {
-    private final MeterMapper meterMapper;
+   @Autowired
+    private  MeterMapper meterMapper;
 
     @Override
     public EnergyDataDTO getLatestByMeterId(Long meterId) {

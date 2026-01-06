@@ -1,11 +1,11 @@
 package ynu.edu.config;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,20 +14,30 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import lombok.RequiredArgsConstructor;
 import ynu.edu.security.JwtAuthenticationEntryPoint;
 import ynu.edu.security.JwtAuthenticationFilter;
 import ynu.edu.security.UserDetailsServiceImpl;
 
+import java.util.Arrays;
+
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true) // 启用方法级权限控制
-@RequiredArgsConstructor
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
-    private final UserDetailsServiceImpl userDetailsService;
-    private final JwtAuthenticationEntryPoint unauthorizedHandler;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+   @Autowired
+   @Lazy
+    private  UserDetailsServiceImpl userDetailsService;
+   @Autowired
+   private  JwtAuthenticationEntryPoint unauthorizedHandler;
+   @Autowired
+   @Lazy
+   private  JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    // 密码加密器
+    // 密码编码器
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -44,30 +54,48 @@ public class SecurityConfig {
 
     // 认证管理器
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+    public AuthenticationManager authenticationManager(org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
-    // 安全过滤链
+    // 安全过滤链（Bean名正确，无冲突）
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors().and().csrf().disable() // 关闭CSRF，开启CORS
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and() // 认证失败处理
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and() // 无状态会话
+                // 跨域配置
+                .cors().configurationSource(corsConfigurationSource()).and()
+                // 关闭CSRF
+                .csrf().disable()
+                // 认证失败处理器
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                // 无状态会话
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                // 接口权限
                 .authorizeHttpRequests(auth -> auth
-                        // 公开接口
                         .requestMatchers("/user/login").permitAll()
-                        // Knife4j接口公开
                         .requestMatchers("/doc.html/**", "/swagger-ui/**", "/webjars/**", "/v3/api-docs/**").permitAll()
-                        // 其他接口需认证
                         .anyRequest().authenticated()
                 );
 
-        // 添加JWT过滤器
+        // 添加自定义过滤器和认证提供者
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    // CORS配置（解决跨域）
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOriginPatterns(Arrays.asList("*"));
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        config.setAllowCredentials(true);
+        config.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
     }
 }
