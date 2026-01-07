@@ -50,7 +50,7 @@
       </el-table>
     </el-card>
 
-    <!-- 图表容器：极简布局，确保存在 -->
+    <!-- 图表容器 -->
     <div style="margin-top: 30px; width: 100%; height: 400px;">
       <h4 style="margin-bottom: 10px;">功率趋势图</h4>
       <!-- 用Vue ref绑定，避免id选择器的挂载问题 -->
@@ -93,7 +93,7 @@ const getLatestData = async () => {
   }
 }
 
-// 获取最近10条数据：极简逻辑，只做基础处理
+// 获取最近10条数据
 const getLatest10Data = async () => {
   if (!searchForm.value.meterId) {
     ElMessage.warning('请输入设备ID')

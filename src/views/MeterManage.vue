@@ -95,7 +95,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-// 1. 新增导入 ElMessageBox（删除警告弹窗依赖）
+// 1. 导入 ElMessageBox（删除警告弹窗依赖）
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import request from '@/utils/request'
@@ -151,7 +151,7 @@ const handleEdit = (row) => {
   dialogVisible.value = true
 }
 
-// 2. 重构删除方法：添加二次确认警告弹窗 + 软删除提示
+// 2. 删除方法：添加二次确认警告弹窗 + 软删除提示
 const handleDelete = async (id) => {
   try {
     // 弹出二次确认警告弹窗
@@ -223,5 +223,4 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* 保持原有样式不变 */
 </style>
