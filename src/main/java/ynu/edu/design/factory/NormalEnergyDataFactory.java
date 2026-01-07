@@ -13,7 +13,8 @@ import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.Random;
 
-// 正常能耗数据工厂（工厂模式）
+// Pattern: Factory - 正常能耗数据工厂
+// 工厂模式中的具体工厂，用于创建正常的能耗数据
 @Component
 @RequiredArgsConstructor
 public class NormalEnergyDataFactory implements EnergyDataFactory {

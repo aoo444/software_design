@@ -5,7 +5,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import ynu.edu.po.Alarm;
 
-// 告警通知监听器（观察者模式）
+// Pattern: Observer - 告警通知监听器
+// 观察者模式中的具体观察者，监听告警事件并执行通知操作
 @Slf4j
 @Component
 public class AlarmNotifyListener {

@@ -15,7 +15,6 @@ spring:
       pool:
         size: 5
 
-# MyBatis-Plus
 mybatis-plus:
   mapper-locations: classpath:mybatis/*.xml
   type-aliases-package: ynu.edu.po
@@ -29,7 +28,6 @@ mybatis-plus:
       logic-delete-value: 1
       logic-not-delete-value: 0
 
-# JWT
 jwt:
   secret: energy-monitor-2025-secret-key-123456
   expiration: 3600000

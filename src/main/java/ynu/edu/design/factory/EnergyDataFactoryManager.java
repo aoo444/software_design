@@ -7,7 +7,8 @@ import ynu.edu.po.Meter;
 
 import java.util.Random;
 
-// 能耗数据工厂管理器（工厂模式）
+// Pattern: Factory - 能耗数据工厂管理器
+// 管理不同的能耗数据工厂，根据条件选择使用正常或异常数据工厂
 @Component
 @RequiredArgsConstructor
 public class EnergyDataFactoryManager {

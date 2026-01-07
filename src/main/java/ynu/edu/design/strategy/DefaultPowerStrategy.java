@@ -4,7 +4,8 @@ import org.springframework.stereotype.Component;
 import java.time.LocalTime;
 import java.util.Random;
 
-// 默认功率生成策略（教室/办公室）
+// Pattern: Strategy - 默认功率生成策略
+// 策略模式中的具体策略，用于生成教室/办公室的功率数据
 @Component
 public class DefaultPowerStrategy implements PowerStrategy {
     private final Random random = new Random();

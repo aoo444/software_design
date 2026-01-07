@@ -11,7 +11,8 @@ import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.Random;
 
-// 异常能耗数据工厂（工厂模式）
+// Pattern: Factory - 异常能耗数据工厂
+// 工厂模式中的具体工厂，用于创建异常的能耗数据
 @Component
 @RequiredArgsConstructor
 public class AbnormalEnergyDataFactory implements EnergyDataFactory {

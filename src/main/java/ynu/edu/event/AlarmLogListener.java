@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
 import ynu.edu.mapper.AlarmMapper;
 import ynu.edu.po.Alarm;
 
-// 告警日志监听器（观察者模式）
+// Pattern: Observer - 告警日志监听器
+// 观察者模式中的具体观察者，监听告警事件并执行日志记录操作
 @Slf4j
 @Component
 public class AlarmLogListener {

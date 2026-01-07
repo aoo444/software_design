@@ -5,7 +5,8 @@ import org.springframework.stereotype.Component;
 import ynu.edu.po.Meter;
 import java.util.Map;
 
-// 功率策略上下文（策略模式）
+// Pattern: Strategy - 功率策略上下文
+// 负责根据不同的设备条件选择合适的功率生成策略
 @Component
 @RequiredArgsConstructor
 public class PowerStrategyContext {

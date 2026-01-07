@@ -4,7 +4,8 @@ import org.springframework.stereotype.Component;
 import java.time.LocalTime;
 import java.util.Random;
 
-// 实验室功率生成策略
+// Pattern: Strategy - 实验室功率生成策略
+// 策略模式中的具体策略，用于生成实验室的功率数据
 @Component
 public class LabPowerStrategy implements PowerStrategy {
     private final Random random = new Random();

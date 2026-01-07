@@ -3,8 +3,9 @@ package ynu.edu.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+
 import io.jsonwebtoken.security.Keys;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+// Pattern: Singleton - JWT工具类
+// 单例模式实现，通过Spring容器管理确保全局唯一实例
 @Slf4j
 @Component
 public class JwtUtil {
@@ -24,6 +27,7 @@ public class JwtUtil {
     @Value("${jwt.expiration:3600000}")
     private long expiration;
 
+    @Getter
     @Value("${jwt.header:Authorization}")
     private String jwtHeader;
 
@@ -35,11 +39,11 @@ public class JwtUtil {
         Map<String, Object> claims = new HashMap<>();
         claims.put("roles", userDetails.getAuthorities());
         return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSecretKey(), SignatureAlgorithm.HS256)
+                .claims(claims)
+                .subject(userDetails.getUsername())
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(getSecretKey())
                 .compact();
     }
 
@@ -66,17 +70,14 @@ public class JwtUtil {
     private Claims getClaimsFromToken(String token) {
         try {
             return Jwts.parser()
-                    .setSigningKey(getSecretKey())
+                    .verifyWith(getSecretKey())
                     .build()
-                    .parseClaimsJws(token)
-                    .getBody();
+                    .parseSignedClaims(token)
+                    .getPayload();
         } catch (JwtException | IllegalArgumentException e) {
             log.error("解析Token失败", e);
             return null;
         }
     }
 
-    public String getJwtHeader() {
-        return jwtHeader;
-    }
 }
