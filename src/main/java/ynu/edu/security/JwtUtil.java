@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 // Pattern: Singleton - JWT工具类
-// 单例模式实现，通过Spring容器管理确保全局唯一实例
 @Getter
 @Slf4j
 @Component

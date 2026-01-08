@@ -36,7 +36,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Result<?> login(LoginDTO loginDTO) {
         try {
-            // 原有登录逻辑完全保留，无需修改
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword())
             );

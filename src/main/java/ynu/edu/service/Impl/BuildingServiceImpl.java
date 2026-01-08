@@ -14,4 +14,12 @@ public class BuildingServiceImpl extends ServiceImpl<BuildingMapper,Building> im
         building.setIsDeleted(0); // 新增时默认未删除
         return super.save(building);
     }
+
+    @Override
+    public boolean updateBuilding(Building building) {
+        if (building.getId() == null) {
+            return false; // id为空直接返回失败
+        }
+        return this.updateById(building);
+    }
 }

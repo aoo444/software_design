@@ -6,4 +6,5 @@ import ynu.edu.po.Meter;
 
 public interface MeterService extends IService<Meter> {
     boolean addMeter(Meter meter);
+    boolean updateMeter(Meter meter);
 }

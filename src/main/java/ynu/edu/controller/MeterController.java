@@ -40,4 +40,10 @@ public class MeterController {
         boolean success = meterService.removeById(id); // 自动执行UPDATE meter SET deleted=1 WHERE id=?
         return success ? Result.success("删除成功（可恢复）") : Result.error("设备不存在");
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    public Result<?> update(@RequestBody Meter meter) {
+        boolean success = meterService.updateMeter(meter);
+        return success ? Result.success("更新设备成功") : Result.error("更新设备失败");
+    }
 }

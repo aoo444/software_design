@@ -28,4 +28,12 @@ public class MeterServiceImpl extends ServiceImpl<MeterMapper,Meter> implements 
         System.out.println("status：" + meter.getStatus());
         return super.save(meter);
     }
+
+    @Override
+    public boolean updateMeter(Meter meter) {
+        if (meter.getId() == null) {
+            return false; // id为空直接返回失败
+        }
+        return this.updateById(meter);
+    }
 }

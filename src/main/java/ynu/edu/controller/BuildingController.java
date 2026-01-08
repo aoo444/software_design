@@ -42,4 +42,12 @@ public class BuildingController {
         boolean success = buildingService.removeById(id); // 自动执行UPDATE meter SET deleted=1 WHERE id=?
         return success ? Result.success("删除成功（可恢复）") : Result.error("设备不存在");
     }
+
+    @Operation(summary = "更新建筑（仅管理员）")
+    @PutMapping("/update")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Result<?> update(@RequestBody Building building) {
+        boolean success = buildingService.updateBuilding(building);
+        return success ? Result.success("更新建筑成功") : Result.error( "更新建筑失败");
+    }
 }
