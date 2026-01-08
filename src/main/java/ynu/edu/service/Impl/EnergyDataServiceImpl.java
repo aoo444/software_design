@@ -13,12 +13,13 @@ import ynu.edu.po.EnergyData;
 import ynu.edu.po.Meter;
 import ynu.edu.service.EnergyDataService;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class EnergyDataServiceImpl extends ServiceImpl<EnergyDataMapper,EnergyData> implements EnergyDataService {
-   @Autowired
+    @Autowired
     private  MeterMapper meterMapper;
 
     @Override
@@ -40,8 +41,16 @@ public class EnergyDataServiceImpl extends ServiceImpl<EnergyDataMapper,EnergyDa
 
     @Override
     public List<EnergyDataDTO> getLatest10ByMeterId(Long meterId) {
-        List<EnergyData> dataList = this.baseMapper.selectLatest10ByMeterId(meterId);
-        if (dataList.isEmpty()) return null;
+        LambdaQueryWrapper<EnergyData> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(EnergyData::getMeterId, meterId) // 匹配电表ID
+                .orderByDesc(EnergyData::getCollectTime) // 按采集时间降序
+                .last("LIMIT 10"); // 取最新10条
+        List<EnergyData> dataList = this.baseMapper.selectList(wrapper);
+
+        if (dataList.isEmpty()) {
+            return Collections.emptyList(); // 返回空列表（推荐），而非null
+        }
+
         Meter meter = meterMapper.selectById(meterId);
         String meterName = meter != null ? meter.getName() : "";
         return dataList.stream().map(data -> {
