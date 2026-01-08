@@ -12,7 +12,7 @@
 | Spring Security| 6.2.x      | 实现用户权限认证与接口授权     |
 | MyBatis-Plus   | 3.5.x      | 简化数据库CRUD操作            |
 | JWT（JJWT）    | 0.11.5     | 生成无状态登录Token           |
-| MySQL          | 8.0.x      | 存储系统数据（楼栋、电表、能耗等）|
+| MySQL          | 9.0.x      | 存储系统数据（楼栋、电表、能耗等）|
 | Maven          | 3.8.x      | 后端依赖管理与项目构建        |
 
 

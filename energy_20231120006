@@ -1,0 +1,89 @@
+create table if not exists building
+(
+    id            bigint auto_increment comment '主键ID'
+        primary key,
+    name          varchar(50)                          not null comment '建筑名称（如楸苑宿舍三号楼、力行楼）',
+    location_code varchar(20)                          null comment '位置编码（自定义，如 LOC_QIU_03）',
+    floor_count   int                                  null comment '建筑楼层数',
+    use_type      varchar(30)                          null comment '建筑用途分类（宿舍/教室/实验室/办公楼/公共场馆）',
+    create_time   datetime   default CURRENT_TIMESTAMP null comment '创建时间',
+    is_deleted    tinyint(1) default 0                 not null comment '软删除标记：0=未删除，1=已删除',
+    constraint uk_building_name
+        unique (name) comment '建筑名称唯一约束'
+)
+    comment '校园建筑信息表' charset = utf8mb4;
+
+create table if not exists meter
+(
+    id          bigint auto_increment comment '主键ID'
+        primary key,
+    name        varchar(50)                          not null comment '设备名称（如宿舍智能电表-01）',
+    sn          varchar(30)                          not null comment '设备唯一序列号（SN）',
+    status      tinyint    default 1                 not null comment '通讯状态：1=在线，0=离线',
+    rated_power decimal(10, 2)                       not null comment '额定功率阈值（单位：W）',
+    building_id bigint                               not null comment '外键：所属建筑ID',
+    room_number varchar(20)                          not null comment '所属房间号（如 301、101、306）',
+    create_time datetime   default CURRENT_TIMESTAMP null comment '创建时间',
+    is_valid    tinyint    default 1                 null comment '是否有效：1=有效（在用），0=停用/拆除',
+    is_deleted  tinyint(1) default 0                 not null comment '软删除标记：0=未删除，1=已删除',
+    constraint uk_meter_sn
+        unique (sn),
+    constraint uk_room_valid
+        unique (room_number, is_valid),
+    constraint meter_ibfk_1
+        foreign key (building_id) references building (id)
+)
+    comment '智能电表设备信息表' charset = utf8mb4;
+
+create table if not exists alarm
+(
+    id           bigint auto_increment comment '主键ID'
+        primary key,
+    meter_id     bigint         not null comment '外键：所属电表设备ID',
+    alarm_type   varchar(20)    not null comment '告警类型：OVERLOAD=功率超限，VOLTAGE_ABNORMAL=电压异常',
+    alarm_value  decimal(10, 2) not null comment '告警触发数值（功率/电压）',
+    alarm_detail varchar(100)   null comment '告警详情描述（如“功率超限：1200W，额定阈值：1000W”）',
+    trigger_time timestamp      not null comment '告警触发时间',
+    constraint alarm_ibfk_1
+        foreign key (meter_id) references meter (id)
+)
+    comment '设备异常告警表' charset = utf8mb4;
+
+create index idx_meter_trigger
+    on alarm (meter_id asc, trigger_time desc);
+
+create table if not exists energy_data
+(
+    id           bigint auto_increment comment '主键ID'
+        primary key,
+    meter_id     bigint                      not null comment '外键：所属电表设备ID',
+    voltage      decimal(5, 2)               not null comment '采集电压（单位：V，范围210-235）',
+    current      decimal(5, 2)               not null comment '采集电流（单位：A）',
+    real_power   decimal(10, 2)              not null comment '实时功率（单位：W，公式：P=U×I）',
+    total_energy decimal(10, 2) default 0.00 not null comment '累计用电量（单位：kWh）',
+    collect_time timestamp                   not null comment '数据采集时间戳（精确到秒）',
+    constraint energy_data_ibfk_1
+        foreign key (meter_id) references meter (id)
+)
+    comment '能耗实时数据表' charset = utf8mb4;
+
+create index idx_meter_collect
+    on energy_data (meter_id asc, collect_time desc);
+
+create index building_id
+    on meter (building_id);
+
+create table if not exists user
+(
+    id          bigint auto_increment comment '主键ID'
+        primary key,
+    username    varchar(20)                        not null comment '登录用户名',
+    password    varchar(100)                       not null comment '密码（BCrypt加密）',
+    role        varchar(10)                        not null comment '角色：ADMIN=管理员，USER=普通用户',
+    status      tinyint  default 1                 null comment '账号状态：1=启用，0=禁用',
+    create_time datetime default CURRENT_TIMESTAMP null comment '创建时间',
+    constraint uk_username
+        unique (username)
+)
+    comment '系统用户表' charset = utf8mb4;
+
